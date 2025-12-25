@@ -17,8 +17,6 @@ local function set_mark(idx)
 		return
 	end
 
-	-- no need to grow to proper size
-
 	-- set path
 	harpoon:list():replace_at(idx, { value = path })
 end
@@ -37,8 +35,10 @@ end
 -- qwe test
 -- r readme
 
--- setup mappings for A,S,D,F mapped to 1,2,3,4
-for idx, letter in ipairs({ "a", "s", "d", "f", "q", "w", "e", "r" }) do
+-- setup mappings for each key
+local keys = "asdfqwer"
+for idx = 1, #keys do
+	local letter = string.sub(keys, idx, idx)
 	vim.keymap.set("n", "m" .. letter, function()
 		set_mark(idx)
 	end)

@@ -688,14 +688,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	end,
 })
 
--------------------------------------------mark setup--------------------------------------------
-require("projectmarks").setup({
-	shadafile = "nvim.shada",
-	mappings = true,
-	abbreviations = false,
-	message = "",
-})
-
 -------------------------------------------theme setup--------------------------------------------
 
 require("everforest").setup({

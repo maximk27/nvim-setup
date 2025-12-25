@@ -57,11 +57,6 @@ require("lazy").setup({
 			dependencies = { "nvzone/volt" },
 		},
 
-		-- project based marks
-		{
-			"BartSte/nvim-project-marks",
-		},
-
 		{ "junegunn/vim-easy-align" },
 
 		{ "stevearc/oil.nvim" },
