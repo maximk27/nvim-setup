@@ -1,4 +1,5 @@
 -- change theme light/dark
+vim.g.transparent_enabled = false
 
 -- if exists fg, then preserve it when changing
 local function setBG(group, bg_color)
@@ -112,6 +113,7 @@ local function themeChanges()
 					"diagnostics",
 					sources = { "nvim_lsp" },
 				},
+				require("triforce.lualine").level,
 			},
 			lualine_y = {
 				"filetype",
