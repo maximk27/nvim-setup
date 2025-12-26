@@ -14,6 +14,7 @@ local function themeChanges()
 	-- print("theme changed!")
 	local theme
 	if vim.opt.background:get() == "light" then
+		-- set light
 		vim.api.nvim_set_hl(0, "@lsp.typemod.variable.defaultLibrary", { fg = "#FF00FF" })
 		vim.api.nvim_set_hl(0, "Identifier", { fg = "#495057" })
 		vim.api.nvim_set_hl(0, "Visual", { bg = "#D0E0E3", blend = 50 })
@@ -44,6 +45,7 @@ local function themeChanges()
 		setBG("TelescopeSelection", line)
 		theme = "iceberg_light"
 	else
+		-- set dark
 		vim.api.nvim_set_hl(0, "@lsp.typemod.variable.defaultLibrary", { fg = "#FF66CC" })
 		vim.api.nvim_set_hl(0, "Identifier", { fg = "#FFFFFF" })
 		vim.api.nvim_set_hl(0, "Visual", { bg = "#335E5E", blend = 80 })
@@ -67,7 +69,7 @@ local function themeChanges()
 		vim.api.nvim_set_hl(0, "Search", { bg = "#FFD700", fg = "#000000", bold = true }) -- Normal search highlight
 		vim.api.nvim_set_hl(0, "IncSearch", { bg = "#ffb86c", fg = "#282a36", bold = true }) -- While typing in search mode
 
-		vim.api.nvim_set_hl(0, "MatchParen", { fg = "#FFD700", bg = "#3F3F3F" })
+		vim.api.nvim_set_hl(0, "MatchParen", { fg = "#FFD700", bg = "#3F3F3F", bold = true })
 
 		vim.api.nvim_set_hl(0, "leetcode_dyn_p", { fg = "#B0B0B0" })
 		vim.api.nvim_set_hl(0, "leetcode_dyn_pre", { fg = "#B0B0B0" })
@@ -82,9 +84,6 @@ local function themeChanges()
 
 		setBG("TelescopeSelection", "#3a3d45")
 		theme = "iceberg_dark"
-
-		vim.api.nvim_set_hl(0, "IblIndent", { fg = "#555555" }) -- change to your desired color
-		vim.api.nvim_set_hl(0, "IblScope", { fg = "#555555" }) -- change to your desired color
 	end
 
 	vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
@@ -151,4 +150,7 @@ vim.api.nvim_create_autocmd("Colorscheme", {
 })
 
 vim.keymap.set("n", "<leader>wr", toggleLightDark)
-vim.cmd.colorscheme("vscode")
+
+-- setup phoenix
+vim.cmd.colorscheme("phoenix")
+-- vim.cmd("PhoenixPurple")

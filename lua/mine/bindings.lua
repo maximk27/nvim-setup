@@ -1,3 +1,11 @@
+vim.keymap.set("v", "gj", function()
+	vim.cmd([[execute "normal! \<ESC>"]])
+	local top = vim.fn.getpos("'<")[2]
+	local bottom = vim.fn.getpos("'>")[2]
+	vim.fn.append(top - 1, "\t// clang-format off")
+	vim.fn.append(bottom + 1, "\t// clang-format on")
+end)
+
 -- stupid
 vim.keymap.set("n", "<C-Space>", "<NOP>")
 vim.keymap.set("i", "<C-c>", "<ESC>", { noremap = true, silent = true })

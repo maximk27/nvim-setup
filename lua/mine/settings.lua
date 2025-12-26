@@ -2,7 +2,7 @@
 vim.o.hlsearch = true
 vim.o.incsearch = true
 vim.o.clipboard = "unnamedplus"
-vim.o.number = true
+vim.o.number = false
 vim.o.scrolloff = 8
 vim.o.guifont = "Input Mono 13"
 vim.o.swapfile = false
@@ -14,7 +14,7 @@ vim.o.ignorecase = true
 -- vim.g.python3_host_prog = "/Users/maximkim/.config/nvim/env/bin/python3"
 vim.o.numberwidth = 4
 vim.o.winheight = 10
-vim.o.signcolumn = "yes"
+vim.o.signcolumn = "yes:2"
 vim.o.showtabline = 0
 
 vim.o.list = false

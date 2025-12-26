@@ -1,3 +1,8 @@
+require("config.misc")
+require("config.harpoon")
+require("config.git")
+require("config.telescope")
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -22,230 +27,131 @@ vim.g.maplocalleader = "\\"
 require("lazy").setup({
 	spec = {
 		-- themes
-		{ "catppuccin/nvim", name = "catppuccin" },
-		{ "sainnhe/sonokai" },
-		{ "navarasu/onedark.nvim" },
-		{ "jacoborus/tender.vim" },
-		{ "tanvirtin/monokai.nvim" },
-		{ "morhetz/gruvbox" },
-		{ "neanias/everforest-nvim" },
-		{ "ishan9299/nvim-solarized-lua" },
-		-- { "projekt0n/github-nvim-theme" },
-		{ "Mofiqul/vscode.nvim" },
-		-- { "folke/tokyonight.nvim" },
-		{ "rose-pine/neovim", name = "rose-pine" },
+		{ "widatama/vim-phoenix" },
 
+		-- utilities
 		{
 			"ThePrimeagen/harpoon",
 			branch = "harpoon2",
 			dependencies = { "nvim-lua/plenary.nvim" },
+			event = "VeryLazy",
+			config = harpoon_setup,
 		},
+		{ "folke/persistence.nvim", event = "BufReadPost", config = persistence_setup },
+		{ "rcarriga/nvim-notify", event = "VeryLazy", config = notify_setup },
 
-		-- persistence
-		{
-			"folke/persistence.nvim",
-		},
-
-		-- notification
-		{
-			"rcarriga/nvim-notify",
-		},
-
-		-- gamify
 		{
 			"gisketch/triforce.nvim",
 			dependencies = { "nvzone/volt" },
+			event = "VeryLazy",
+			config = tritforce_setup,
 		},
-
-		{ "junegunn/vim-easy-align" },
-
-		{ "stevearc/oil.nvim" },
+		{ "stevearc/oil.nvim", config = oil_setup },
 
 		-- debugger
-		-- { "jay-babu/mason-nvim-dap.nvim" },
-		{ "mfussenegger/nvim-dap" },
-		{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
-		-- { "neogen", config = true },
-		-- find and replace
 		{
-			"nvim-pack/nvim-spectre",
+			"rcarriga/nvim-dap-ui",
+			dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+			event = "VeryLazy",
+			config = debug_setup,
 		},
 
-		-- install without yarn or npm
+		-- find and replace
+		{ "nvim-pack/nvim-spectre", cmd = { "Spectre" }, config = spectre_setup },
+
+		-- markdown preview
 		{
 			"iamcco/markdown-preview.nvim",
 			cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
 			build = "cd app && yarn install",
-			init = function()
-				vim.g.mkdp_filetypes = { "markdown" }
-				vim.g.mkdp_auto_close = 0
-				vim.g.mkdp_refresh_slow = 1
-			end,
-			ft = { "markdown" },
-		},
-		{
-			"lukas-reineke/indent-blankline.nvim",
-			main = "ibl",
-			---@module "ibl"
-			---@type ibl.config
-			opts = {},
+			init = markdown_init,
 		},
 
+		-- LSP
 		{
-			"Wansmer/treesj",
-			dependencies = { "nvim-treesitter/nvim-treesitter" }, -- if you install parsers with `nvim-treesitter`
+			"neovim/nvim-lspconfig",
+			event = "BufReadPre",
+			dependencies = {
+				"williamboman/mason.nvim",
+			},
+			config = lsp_setup,
 		},
 
-		-- peak lines
+		-- completion
 		{
-			"nacro90/numb.nvim",
-
-			config = function()
-				require("numb").setup()
-			end,
-		},
-
-		-- lsp manager
-		{ "williamboman/mason.nvim" },
-		{ "williamboman/mason-lspconfig.nvim" },
-
-		-- base lsp
-		{ "neovim/nvim-lspconfig" },
-
-		-- completion and suggestions
-		{ "hrsh7th/cmp-nvim-lsp" },
-		{ "hrsh7th/nvim-cmp" },
-		{ "saadparwaiz1/cmp_luasnip" },
-		{
-			"L3MON4D3/LuaSnip",
-			version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
-			-- install jsregexp (optional!).
-			build = "make install_jsregexp",
-			dependencies = { "rafamadriz/friendly-snippets" },
-		},
-		{
-			"ray-x/lsp_signature.nvim",
+			"hrsh7th/nvim-cmp",
 			event = "InsertEnter",
+			dependencies = {
+				"hrsh7th/cmp-nvim-lsp",
+				"saadparwaiz1/cmp_luasnip",
+				"L3MON4D3/LuaSnip",
+				"rafamadriz/friendly-snippets",
+				"ray-x/lsp_signature.nvim",
+				"nvim-highlight-colors",
+			},
+			config = suggestion_setup,
 		},
-		-- { "luckasRanarison/tailwind-tools.nvim", lazy = true },
-		{ "brenoprata10/nvim-highlight-colors", lazy = true },
+
+		-- treesitter
+		{
+			"nvim-treesitter/nvim-treesitter",
+			build = ":TSUpdate",
+			event = "BufReadPost",
+			dependencies = { "nvim-treesitter/nvim-treesitter-context" },
+			config = treesitter_setup,
+		},
 
 		-- formatter
-		{ "stevearc/conform.nvim", opts = {} },
-
-		-- tree-siter
-		{ "nvim-treesitter/nvim-treesitter" },
-		{ "nvim-treesitter/nvim-treesitter-context" },
+		{ "stevearc/conform.nvim", event = "BufWritePre", opts = {}, config = conform_setup },
 
 		-- comment
-		{ "numToStr/Comment.nvim", opts = {} },
+		{ "numToStr/Comment.nvim", event = "VeryLazy", opts = {}, config = comment_setup },
 
 		-- fuzzy finder
 		{
 			"nvim-telescope/telescope.nvim",
 			tag = "0.1.8",
-			dependencies = {
-				"BurntSushi/ripgrep",
-				"nvim-lua/plenary.nvim",
-			},
+			dependencies = { "nvim-lua/plenary.nvim", "BurntSushi/ripgrep" },
+			config = telescope_setup,
 		},
 
-		-- diagnostcs finder
-		{ "folke/trouble.nvim" },
-
-		-- todo comments
+		-- diagnostics / todo
 		{
 			"folke/todo-comments.nvim",
-			opts = {
-				signs = false,
-				keywords = {
-					FIX = {
-						icon = " ", -- icon used for the sign, and in search results
-						color = "error", -- can be a hex color, or a named color (see below)
-						alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
-						-- signs = false, -- configure signs for some keywords individually
-					},
-					TODO = { icon = " ", color = "test" },
-					HACK = { icon = " ", color = "warning" },
-					WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-					PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-					NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
-					TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
-				},
+			event = "BufReadPost",
+			opts = { signs = false },
+			dependencies = {
+				"folke/trouble.nvim",
 			},
+			config = trouble_todo_setup,
 		},
 
 		-- icons
-		{ "nvim-tree/nvim-web-devicons" },
+		{ "nvim-tree/nvim-web-devicons", event = "VeryLazy", config = icons_setup },
 
-		--auto pairs
-		{
-			"windwp/nvim-autopairs",
-			event = "InsertEnter",
-			config = true,
-		},
-		{ "windwp/nvim-ts-autotag", lazy = true },
-
-		-- surround editing
-		{ "kylechui/nvim-surround" },
+		-- editing helpers
+		{ "windwp/nvim-autopairs", event = "InsertEnter", config = autopairs_setup },
+		{ "windwp/nvim-ts-autotag", event = "InsertEnter", config = autotag_setup },
+		{ "kylechui/nvim-surround", event = "VeryLazy", config = surround_setup },
 
 		-- status line
 		{ "nvim-lualine/lualine.nvim" },
 
-		-- cpp
-		{
-			"xeluxee/competitest.nvim",
-			dependencies = "MunifTanjim/nui.nvim",
-			lazy = true,
-		},
-
-		-- leetcode
-		{
-			"kawre/leetcode.nvim",
-			dependencies = {
-				"nvim-telescope/telescope.nvim",
-				-- "ibhagwan/fzf-lua",
-				"nvim-lua/plenary.nvim",
-				"MunifTanjim/nui.nvim",
-			},
-			opts = {
-				-- image_support = true,
-				lang = "python3",
-				injector = {
-					python3 = {
-						before = {},
-					},
-					cpp = {
-						before = {},
-					},
-					java = {
-						before = "import java.util.*;",
-					},
-				},
-				storage = {
-					home = "~/cpp/leetcode",
-					cache = vim.fn.stdpath("cache") .. "/leetcode",
-				},
-			},
-		},
+		-- cpp / contest
+		{ "xeluxee/competitest.nvim", dependencies = "MunifTanjim/nui.nvim", event = "VeryLazy", config = cpp_setup },
 
 		-- git
 		{
 			"NeogitOrg/neogit",
-			lazy = true,
+			event = "VeryLazy",
 			dependencies = {
-				"nvim-lua/plenary.nvim", -- required
-				"sindrets/diffview.nvim", -- optional - Diff integration
-
-				-- Only one of these is needed.
-				"nvim-telescope/telescope.nvim", -- optional
+				"nvim-lua/plenary.nvim",
+				"sindrets/diffview.nvim",
+				"nvim-telescope/telescope.nvim",
+				"lewis6991/gitsigns.nvim",
 			},
-			cmd = "Neogit",
+			config = git_setup,
 		},
-		{ "sindrets/diffview.nvim" },
-		-- { "pwntester/octo.nvim" },
-		{ "lewis6991/gitsigns.nvim", lazy = true },
-		{ "tpope/vim-fugitive" },
 	},
 	install = { colorscheme = { "habamax" } },
 	checker = { enabled = false },

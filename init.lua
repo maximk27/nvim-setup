@@ -1,11 +1,7 @@
 require("config.lazy")
-require("mine.misc")
 
-require("mine.telescope")
-require("mine.harpoon")
 require("mine.settings")
 require("mine.bindings")
 require("mine.theme")
 require("mine.quickfix")
 require("mine.file_autos")
-require("mine.git")
