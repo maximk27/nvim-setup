@@ -1,32 +1,34 @@
-----------------------------------------------todo/trouble--------------------------------------------------
-function trouble_todo_setup()
-	vim.keymap.set("n", ";c", function()
-		builtin.diagnostics({ severity_limit = vim.diagnostic.severity.ERROR })
-	end)
-
-	require("trouble").setup({
-		win = {
-			size = 5,
+------------------------------------------lualine--------------------------------------------------
+function lualine_setup()
+	local theme = "iceberg_dark"
+	require("lualine").setup({
+		options = {
+			theme = theme,
+			component_separators = "",
+			section_separators = "",
 		},
-		filter = {
-			severity = {
-				min = vim.diagnostic.severity.ERROR,
-				max = vim.diagnostic.severity.ERROR,
+		sections = {
+			lualine_a = {},
+			lualine_b = {},
+			lualine_c = {
+				"filename",
+				-- { "filename", path = 1 },
 			},
+			lualine_x = {
+				{
+					"diagnostics",
+					sources = { "nvim_lsp" },
+				},
+				require("triforce.lualine").level,
+			},
+			lualine_y = {
+				"filetype",
+			},
+			lualine_z = {},
 		},
-		update_in_insert = true,
 	})
-
-	vim.keymap.set("n", "]t", function()
-		require("todo-comments").jump_next()
-	end, { desc = "Next todo comment" })
-
-	vim.keymap.set("n", "[t", function()
-		require("todo-comments").jump_prev()
-	end, { desc = "Previous todo comment" })
-
-	vim.keymap.set("n", ";t", "<CMD>TodoTelescope<CR>")
 end
+
 ----------------------------------------------markdown--------------------------------------------------
 
 function markdown_init()

@@ -14,7 +14,7 @@ vim.o.ignorecase = true
 -- vim.g.python3_host_prog = "/Users/maximkim/.config/nvim/env/bin/python3"
 vim.o.numberwidth = 4
 vim.o.winheight = 10
-vim.o.signcolumn = "yes:2"
+vim.o.signcolumn = "yes"
 vim.o.showtabline = 0
 
 vim.o.list = false

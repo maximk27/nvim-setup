@@ -1,7 +1,7 @@
 require("config.misc")
 require("config.harpoon")
 require("config.git")
-require("config.telescope")
+require("config.search")
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -107,23 +107,19 @@ require("lazy").setup({
 		-- comment
 		{ "numToStr/Comment.nvim", event = "VeryLazy", opts = {}, config = comment_setup },
 
-		-- fuzzy finder
+		-- search
 		{
 			"nvim-telescope/telescope.nvim",
 			tag = "0.1.8",
-			dependencies = { "nvim-lua/plenary.nvim", "BurntSushi/ripgrep" },
-			config = telescope_setup,
-		},
-
-		-- diagnostics / todo
-		{
-			"folke/todo-comments.nvim",
-			event = "BufReadPost",
-			opts = { signs = false },
 			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"BurntSushi/ripgrep",
+				"folke/todo-comments.nvim",
 				"folke/trouble.nvim",
 			},
-			config = trouble_todo_setup,
+			event = { "BufReadPre" },
+			cmd = { "Telescope" },
+			config = telescope_setup,
 		},
 
 		-- icons
@@ -132,10 +128,10 @@ require("lazy").setup({
 		-- editing helpers
 		{ "windwp/nvim-autopairs", event = "InsertEnter", config = autopairs_setup },
 		{ "windwp/nvim-ts-autotag", event = "InsertEnter", config = autotag_setup },
-		{ "kylechui/nvim-surround", event = "VeryLazy", config = surround_setup },
+		{ "kylechui/nvim-surround", event = "InsertEnter", config = surround_setup },
 
 		-- status line
-		{ "nvim-lualine/lualine.nvim" },
+		{ "nvim-lualine/lualine.nvim", config = lualine_setup },
 
 		-- cpp / contest
 		{ "xeluxee/competitest.nvim", dependencies = "MunifTanjim/nui.nvim", event = "VeryLazy", config = cpp_setup },
