@@ -6,9 +6,31 @@ vim.keymap.set("v", "gj", function()
 	vim.fn.append(bottom + 1, "\t// clang-format on")
 end)
 
+-- toggle line nums
+vim.keymap.set("n", "<leader>l", function()
+	vim.o.number = not vim.o.number
+end)
+
+-- copy curr work dir
+vim.keymap.set("n", "<leader>w", function()
+	local path = vim.fn.expand("%:p:h")
+
+	-- just to make it work with oil virtual paths
+	local bad_prefix = "oil://"
+	if string.sub(path, 0, #bad_prefix) == bad_prefix then
+		path = string.sub(path, #bad_prefix + 1)
+	end
+	vim.fn.setreg("+", path)
+	vim.notify("copied dir")
+end)
+
 -- stupid
 vim.keymap.set("n", "<C-Space>", "<NOP>")
 vim.keymap.set("i", "<C-c>", "<ESC>", { noremap = true, silent = true })
+
+-- stop pinky hurt
+vim.keymap.set("n", ";w", ":w")
+vim.keymap.set("n", ";q", ":q")
 
 -- reset
 vim.keymap.set("n", "_", ":e!<CR>", { noremap = true, silent = true })
@@ -22,6 +44,14 @@ vim.keymap.set("n", "K", "5k", { noremap = true, silent = true })
 vim.keymap.set("n", "J", "5j", { noremap = true, silent = true })
 vim.keymap.set("v", "K", "5k", { noremap = true, silent = true })
 vim.keymap.set("v", "J", "5j", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<M-k>", "5k", { noremap = true, silent = true })
+vim.keymap.set("n", "<M-j>", "5j", { noremap = true, silent = true })
+vim.keymap.set("v", "<M-k>", "5k", { noremap = true, silent = true })
+vim.keymap.set("v", "<M-j>", "5j", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<C-e>", "<End>", { noremap = true, silent = true })
+vim.keymap.set("v", "<C-e>", "<End>", { noremap = true, silent = true })
 
 --insert edit
 vim.keymap.set("i", "<C-f>", "<Right>", { noremap = true, silent = true })
@@ -50,24 +80,26 @@ vim.keymap.set("c", "<C-d>", "<Delete>")
 vim.keymap.set("c", "<A-BS>", "<C-w>", { noremap = true, silent = true })
 
 -- pasting non overwrite
-vim.keymap.set("v", "P", '"_dP', { noremap = true, silent = true })
-vim.keymap.set("v", "C", '"_c', { noremap = true, silent = true })
-vim.keymap.set("v", "D", '"_d', { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<M-p>", '"_dP', { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<M-c>", '"_c', { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<M-d>", '"_d', { noremap = true, silent = true })
+
+vim.keymap.set("n", "<M-C>", '"_C', { noremap = true, silent = true })
+vim.keymap.set("n", "<M-D>", '"_D', { noremap = true, silent = true })
 
 -- scrolling
 vim.keymap.set("n", "<C-u>", "10<C-y>")
 vim.keymap.set("n", "<C-d>", "10<C-e>")
 
 -- window
-vim.keymap.set("n", "<M-J>", ":resize -5<CR>")
 vim.keymap.set("n", "<M-K>", ":resize +5<CR>")
-vim.keymap.set("n", "<M-H>", ":vertical resize -5<CR>")
+vim.keymap.set("n", "<M-J>", ":resize -5<CR>")
 vim.keymap.set("n", "<M-L>", ":vertical resize +5<CR>")
+vim.keymap.set("n", "<M-H>", ":vertical resize -5<CR>")
+vim.keymap.set("n", "<M-)>", "<C-w>=")
 
-vim.keymap.set("n", "<M-j>", "<C-w>j")
-vim.keymap.set("n", "<M-k>", "<C-w>k")
-vim.keymap.set("n", "H", "<C-w>h")
-vim.keymap.set("n", "L", "<C-w>l")
+vim.keymap.set("n", "<M-h>", "<C-w>h")
+vim.keymap.set("n", "<M-l>", "<C-w>l")
 
 -- work on this
 

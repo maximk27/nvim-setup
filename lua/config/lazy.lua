@@ -74,7 +74,7 @@ require("lazy").setup({
 		-- markdown preview
 		{
 			"iamcco/markdown-preview.nvim",
-			cmd = "MarkdownPreview",
+			event = { "BufReadPre" },
 			build = "cd app && yarn install",
 			config = markdown_init,
 		},

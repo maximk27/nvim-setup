@@ -1,65 +1,65 @@
 -- change theme light/dark
 vim.cmd.colorscheme("phoenix")
---
--- if exists fg, then preserve it when changing
-local function setBG(group, bg_color)
-	local current_hl = vim.api.nvim_get_hl_by_name(group, true)
-	local fg_color = current_hl.foreground or "NONE"
-	vim.api.nvim_set_hl(0, group, { fg = fg_color, bg = bg_color })
-end
 
-vim.api.nvim_set_hl(0, "NonText", { bg = "NONE", fg = "NONE" })
+function adjust_colors()
+	-- if exists fg, then preserve it when changing
+	local function setBG(group, bg_color)
+		local current_hl = vim.api.nvim_get_hl_by_name(group, true)
+		local fg_color = current_hl.foreground or "NONE"
+		vim.api.nvim_set_hl(0, group, { fg = fg_color, bg = bg_color })
+	end
 
-vim.api.nvim_set_hl(0, "@lsp.typemod.variable.defaultLibrary", { fg = "#FF66CC" })
-vim.api.nvim_set_hl(0, "Identifier", { fg = "#FFFFFF" })
-vim.api.nvim_set_hl(0, "Visual", { bg = "#335E5E", blend = 80 })
-vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#335E5E", blend = 80 })
+	vim.api.nvim_set_hl(0, "NonText", { bg = "NONE", fg = "NONE" })
 
-local normal = "#212229"
-setBG("Normal", normal)
-setBG("SignColumn", normal)
-setBG("LineNr", normal)
-setBG("NormalNC", normal)
+	vim.api.nvim_set_hl(0, "@lsp.typemod.variable.defaultLibrary", { fg = "#FF66CC" })
+	vim.api.nvim_set_hl(0, "Identifier", { fg = "#999999" })
+	vim.api.nvim_set_hl(0, "Visual", { bg = "#335E5E", blend = 80 })
+	vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#335E5E", blend = 80 })
 
-vim.api.nvim_set_hl(0, "DiagnosticSignError", { bg = normal, fg = "#ff5f5f" })
-vim.api.nvim_set_hl(0, "DiagnosticSignWarn", { bg = normal, fg = "#e0af00" })
-setBG("DiagnosticSignInfo", normal)
-setBG("DiagnosticSignHint", normal)
+	local normal = "#212229"
+	setBG("Normal", normal)
 
-vim.api.nvim_set_hl(0, "Search", { bg = "#FFD700", fg = "#000000", bold = true }) -- Normal search highlight
-vim.api.nvim_set_hl(0, "IncSearch", { bg = "#ffb86c", fg = "#282a36", bold = true }) -- While typing in search mode
+	setBG("SignColumn", normal)
+	setBG("LineNr", normal)
+	setBG("NormalNC", normal)
 
-vim.api.nvim_set_hl(0, "MatchParen", { fg = "#FFD700", bg = "#3F3F3F", bold = true })
+	vim.api.nvim_set_hl(0, "DiagnosticSignError", { bg = nil, fg = "#ff5f5f" })
+	vim.api.nvim_set_hl(0, "DiagnosticSignWarn", { bg = nil, fg = "#e0af00" })
+	setBG("DiagnosticSignInfo", normal)
+	setBG("DiagnosticSignHint", normal)
 
-local line = "#30313b"
-setBG("CursorLine", line)
-setBG("CursorLineNr", line)
+	vim.api.nvim_set_hl(0, "Search", { bg = "#FFD700", fg = "#000000", bold = true }) -- Normal search highlight
+	vim.api.nvim_set_hl(0, "IncSearch", { bg = "#ffb86c", fg = "#282a36", bold = true }) -- While typing in search mode
 
--- get rid of special hhighlight on args
-vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
-vim.api.nvim_set_hl(0, "@parameter", { link = "Identifier" })
-vim.api.nvim_set_hl(0, "@variable", { link = "Identifier" })
-vim.api.nvim_set_hl(0, "@variable.parameter", { link = "Identifier" })
-vim.api.nvim_set_hl(0, "@function.call", { link = "Function" })
-vim.api.nvim_set_hl(0, "@member", { link = "Identifier" })
-vim.api.nvim_set_hl(0, "@property", { link = "Identifier" })
+	vim.api.nvim_set_hl(0, "MatchParen", { fg = "#FFD700", bg = "#3F3F3F", bold = true })
 
--- set comment
--- local col = "#6a9955"
--- local col = "#565f89"
-local col = "#34C22C"
-vim.api.nvim_set_hl(0, "@comment", { bg = nil, fg = col })
+	local line = "#30313b"
+	setBG("CursorLine", line)
+	setBG("CursorLineNr", line)
 
--- set cursor to default terminal
-vim.cmd("highlight Cursor guifg=NONE guibg=NONE")
+	setBG("NormalFloat", "#203034")
 
--- Remove italic, bold, underlinefrom all highlight groups
-for _, group in ipairs(vim.fn.getcompletion("", "highlight")) do
-	local highlight = vim.api.nvim_get_hl_by_name(group, true)
-	if highlight then
-		highlight.italic = nil
-		highlight.bold = nil
-		highlight.underline = nil
-		vim.api.nvim_set_hl(0, group, highlight)
+	-- set comment
+	local col = "#34C22C"
+	vim.api.nvim_set_hl(0, "@comment", { bg = nil, fg = col })
+
+	-- set cursor to default terminal
+	vim.cmd("highlight Cursor guifg=NONE guibg=NONE")
+
+	-- Remove italic, bold, underlinefrom all highlight groups
+	for _, group in ipairs(vim.fn.getcompletion("", "highlight")) do
+		local highlight = vim.api.nvim_get_hl_by_name(group, true)
+		if highlight then
+			highlight.italic = nil
+			highlight.bold = nil
+			highlight.underline = nil
+			vim.api.nvim_set_hl(0, group, highlight)
+		end
 	end
 end
+
+vim.api.nvim_create_autocmd("colorscheme", {
+	pattern = "*",
+	callback = adjust_colors,
+})
+adjust_colors()

@@ -25,4 +25,7 @@
 - lsp: [pyright](https://github.com/microsoft/pyright)
 - format: [ruff](https://pypi.org/project/ruff/)
 
+### assembly
+- lsp: [asm-lsp](https://github.com/bergercookie/asm-lsp)
+
 

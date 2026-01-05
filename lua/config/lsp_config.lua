@@ -1,25 +1,7 @@
 function lsp_setup_config()
 	require("mason").setup({})
 
-	function root_dir_func(patterns)
-		return function(fname)
-			-- normalize if buffer num is given
-			if type(fname) == "number" then
-				fname = vim.api.nvim_buf_get_name(fname)
-			end
-
-			-- try all patterns
-			for _, pattern in ipairs(patterns) do
-				local path = vim.fs.find(pattern, { upward = true, path = fname })[1]
-				if path then
-					return vim.fs.dirname(path)
-				end
-			end
-			-- fallback
-			return vim.fs.dirname(fname)
-		end
-	end
-
+	-- python
 	vim.lsp.config("pyright", {
 		settings = {
 			["python"] = {
@@ -34,6 +16,7 @@ function lsp_setup_config()
 		},
 	})
 
+	-- lua
 	vim.lsp.config("lua_ls", {
 		settings = {
 			Lua = {
@@ -44,10 +27,10 @@ function lsp_setup_config()
 		},
 	})
 
+	-- rust
 	vim.lsp.config("rust-analyzer", {
 		cmd = { "rust-analyzer" },
 		filetypes = { "rust" },
-		root_dir = root_dir_func({ "Cargo.toml", ".git" }),
 		settings = {
 			["rust-analyzer"] = {
 				imports = {
@@ -68,17 +51,21 @@ function lsp_setup_config()
 		},
 	})
 
-	vim.lsp.config.marksman = {}
+	-- md
+	vim.lsp.config("marksman", {})
 
+	-- bash
 	vim.lsp.config("bashls", {
 		cmd = { "bash-language-server", "start" },
 		filetypes = { "bash", "sh", "zsh" },
 		-- root_dir = root_dir_func({ ".git" }),
 	})
 
+	-- go
 	vim.lsp.config("gopls", {})
 
 	local ls_to_setup = {
+		"pyright",
 		"clangd",
 		"lua_ls",
 		"cmake",
@@ -107,13 +94,20 @@ function lsp_setup_config()
 			vim.keymap.set("n", "<C-k>", hoverLook, opts)
 			vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
 			vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
+
+			-- open buffer in side bar
+			vim.keymap.set("n", "<C-w>k", function()
+				vim.cmd("vsplit")
+				vim.cmd("lua vim.lsp.buf.definition()")
+			end, opts)
+
 			vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
 			vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
 			vim.keymap.set("n", "gr", "<cmd>cexpr []<cr><cmd>lua vim.lsp.buf.references()<cr>", opts)
 			vim.keymap.set("n", ";r", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
 			-- vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
 			vim.keymap.set("n", "ge", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
-			vim.keymap.set("n", "<M-l>", "<cmd>lua vim.diagnostic.open_float()<cr>", opts)
+			vim.keymap.set("n", "<C-j>", "<cmd>lua vim.diagnostic.open_float()<cr>", opts)
 			vim.keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>", opts)
 			vim.keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>", opts)
 		end,

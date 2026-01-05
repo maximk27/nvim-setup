@@ -4,7 +4,7 @@ function harpoon_setup()
 	-- REQUIRED
 	harpoon:setup()
 	-- REQUIRED
-	vim.keymap.set("n", "<C-e>", function()
+	vim.keymap.set("n", ";e", function()
 		harpoon.ui:toggle_quick_menu(harpoon:list())
 	end)
 

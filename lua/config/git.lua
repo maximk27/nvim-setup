@@ -29,19 +29,19 @@ function git_setup()
 		end)
 
 		-- Actions
-		map("n", ";a", gitsigns.stage_hunk)
-		map("n", ";w", gitsigns.reset_hunk)
+		map("n", ";A", gitsigns.stage_hunk)
+		map("n", ";a", gitsigns.reset_hunk)
 
-		map("v", ";a", function()
+		map("v", ";A", function()
 			gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 		end)
 
-		map("v", ";w", function()
+		map("v", ";a", function()
 			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 		end)
 
 		map("n", ";A", gitsigns.stage_buffer)
-		map("n", ";W", gitsigns.reset_buffer)
+		map("n", ";A", gitsigns.reset_buffer)
 		-- map("n", "<leader>hp", gitsigns.preview_hunk)
 		-- map("n", "<leader>hi", gitsigns.preview_hunk_inline)
 
@@ -159,7 +159,6 @@ function git_setup()
 
 	vim.opt.diffopt:append("vertical")
 
-	vim.keymap.set("n", ";q", "<CMD>q<CR>")
 	-- vim.keymap.set("n", "+", ":Gread<CR>")
 
 	vim.keymap.set("n", ";x", reset)
