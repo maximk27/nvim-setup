@@ -229,8 +229,12 @@ function suggestion_setup()
 			["<C-p>"] = cmp.mapping.select_prev_item(),
 		},
 		window = {
-			completion = cmp.config.window.bordered(),
-			documentation = cmp.config.window.bordered(),
+			completion = cmp.config.window.bordered({
+				border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+			}),
+			documentation = cmp.config.window.bordered({
+				border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+			}),
 		},
 		performance = {
 			debounce = 60,
@@ -269,8 +273,15 @@ function treesitter_setup()
 	})
 
 	require("treesitter-context").setup({
-		max_lines = 2,
+		max_lines = 1,
 	})
+
+	local function setBG(group, bg_color)
+		local current_hl = vim.api.nvim_get_hl_by_name(group, true)
+		local fg_color = current_hl.foreground or "NONE"
+		vim.api.nvim_set_hl(0, group, { fg = fg_color, bg = bg_color })
+	end
+	setBG("TreesitterContextBottom", "#203034")
 
 	vim.keymap.set("n", "<C-a>", function()
 		require("treesitter-context").go_to_context(vim.v.count1)

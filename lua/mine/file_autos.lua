@@ -56,6 +56,7 @@ for i = 1, #language_templates do
 		callback = function()
 			local template_lines = vim.split(pair[2], "\n")
 			local line_count = vim.api.nvim_buf_line_count(0)
+			-- trigger only if empty
 			if line_count == 1 then
 				vim.api.nvim_buf_set_lines(0, 0, 0, false, template_lines)
 			end

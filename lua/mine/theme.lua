@@ -37,7 +37,7 @@ function adjust_colors()
 	setBG("CursorLine", line)
 	setBG("CursorLineNr", line)
 
-	setBG("NormalFloat", "#203034")
+	setBG("NormalFloat", nil)
 
 	-- set comment
 	local col = "#34C22C"

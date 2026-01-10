@@ -40,8 +40,6 @@ function git_setup()
 			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 		end)
 
-		map("n", ";A", gitsigns.stage_buffer)
-		map("n", ";A", gitsigns.reset_buffer)
 		-- map("n", "<leader>hp", gitsigns.preview_hunk)
 		-- map("n", "<leader>hi", gitsigns.preview_hunk_inline)
 
@@ -107,7 +105,7 @@ function git_setup()
 		file_history_panel = {
 			win_config = {
 				position = "bottom",
-				height = 12,
+				height = 10,
 				win_opts = {},
 			},
 		},

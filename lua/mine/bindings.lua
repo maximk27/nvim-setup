@@ -11,9 +11,32 @@ vim.keymap.set("n", "<leader>l", function()
 	vim.o.number = not vim.o.number
 end)
 
+-- create a long line of -- title --
+
+-- returns the length
+function make_title(title, width)
+	-- round down
+	local side_length = math.floor((width - #title) / 2)
+	local side = string.rep("-", side_length)
+	local res = "// " .. side .. " " .. title .. " " .. side
+	print(res)
+	return res
+end
+
+vim.keymap.set("n", "<leader>-", function()
+	local ok, title = pcall(vim.fn.input, "Title: ")
+	if not ok then
+		return
+	end
+
+	local text = make_title(title, 75)
+	-- put the text at curr line
+	vim.api.nvim_set_current_line(text)
+end)
+
 -- copy curr work dir
 vim.keymap.set("n", "<leader>w", function()
-	local path = vim.fn.expand("%:p:h")
+	local ok, path = vim.fn.expand("%:p:h")
 
 	-- just to make it work with oil virtual paths
 	local bad_prefix = "oil://"
@@ -32,6 +55,10 @@ vim.keymap.set("i", "<C-c>", "<ESC>", { noremap = true, silent = true })
 vim.keymap.set("n", ";w", ":w")
 vim.keymap.set("n", ";q", ":q")
 
+-- v and V for pinkky lol
+vim.keymap.set("n", "v", "V", { noremap = true })
+vim.keymap.set("n", "V", "v", { noremap = true })
+
 -- reset
 vim.keymap.set("n", "_", ":e!<CR>", { noremap = true, silent = true })
 
@@ -40,10 +67,10 @@ vim.keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 vim.keymap.set("v", "<", "<gv", { noremap = true, silent = true })
 
 -- vertical movement
-vim.keymap.set("n", "K", "5k", { noremap = true, silent = true })
-vim.keymap.set("n", "J", "5j", { noremap = true, silent = true })
-vim.keymap.set("v", "K", "5k", { noremap = true, silent = true })
-vim.keymap.set("v", "J", "5j", { noremap = true, silent = true })
+-- vim.keymap.set("n", "K", "5k", { noremap = true, silent = true })
+-- vim.keymap.set("n", "J", "5j", { noremap = true, silent = true })
+-- vim.keymap.set("v", "K", "5k", { noremap = true, silent = true })
+-- vim.keymap.set("v", "J", "5j", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<M-k>", "5k", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-j>", "5j", { noremap = true, silent = true })

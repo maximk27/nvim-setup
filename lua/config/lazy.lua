@@ -30,7 +30,7 @@ require("lazy").setup({
 	spec = {
 		-- themes
 		{ "widatama/vim-phoenix" },
-		{ "jacoborus/tender.vim" },
+		-- { "rose-pine/neovim" },
 
 		-- utilities
 		{
