@@ -36,7 +36,7 @@ end)
 
 -- copy curr work dir
 vim.keymap.set("n", "<leader>w", function()
-	local ok, path = vim.fn.expand("%:p:h")
+	local path = vim.fn.expand("%:p:h")
 
 	-- just to make it work with oil virtual paths
 	local bad_prefix = "oil://"
@@ -65,12 +65,6 @@ vim.keymap.set("n", "_", ":e!<CR>", { noremap = true, silent = true })
 -- indent
 vim.keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 vim.keymap.set("v", "<", "<gv", { noremap = true, silent = true })
-
--- vertical movement
--- vim.keymap.set("n", "K", "5k", { noremap = true, silent = true })
--- vim.keymap.set("n", "J", "5j", { noremap = true, silent = true })
--- vim.keymap.set("v", "K", "5k", { noremap = true, silent = true })
--- vim.keymap.set("v", "J", "5j", { noremap = true, silent = true })
 
 vim.keymap.set("n", "<M-k>", "5k", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-j>", "5j", { noremap = true, silent = true })
@@ -127,10 +121,3 @@ vim.keymap.set("n", "<M-)>", "<C-w>=")
 
 vim.keymap.set("n", "<M-h>", "<C-w>h")
 vim.keymap.set("n", "<M-l>", "<C-w>l")
-
--- work on this
-
--- vim.keymap.set("n", "<C-w>l", "<C-w>l:vertical resize 100<CR>", { noremap = true, silent = true })
--- vim.keymap.set("n", "<C-w>h", "<C-w>h:vertical resize 100<CR>", { noremap = true, silent = true })
--- vim.keymap.set("n", "<C-w>k", "<C-w>k:horizontal resize 25<CR>", { noremap = true, silent = true })
--- vim.keymap.set("n", "<C-w>j", "<C-w>j:horizontal resize 25<CR>", { noremap = true, silent = true })

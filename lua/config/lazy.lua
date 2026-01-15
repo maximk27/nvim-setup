@@ -30,7 +30,7 @@ require("lazy").setup({
 	spec = {
 		-- themes
 		{ "widatama/vim-phoenix" },
-		-- { "rose-pine/neovim" },
+		{ "yorickpeterse/vim-paper" },
 
 		-- utilities
 		{
@@ -139,7 +139,7 @@ require("lazy").setup({
 		{ "kylechui/nvim-surround", event = "InsertEnter", config = surround_setup },
 
 		-- status line
-		{ "nvim-lualine/lualine.nvim", config = lualine_setup },
+		{ "nvim-lualine/lualine.nvim" },
 
 		-- cpp / contest
 		{
