@@ -33,17 +33,34 @@ vim.keymap.set("n", "<leader>-", function()
 	vim.api.nvim_set_current_line(text)
 end)
 
--- copy curr work dir
-vim.keymap.set("n", "<leader>w", function()
-	local path = vim.fn.expand("%:p:h")
-
+function use_path(path)
 	-- just to make it work with oil virtual paths
 	local bad_prefix = "oil://"
 	if string.sub(path, 0, #bad_prefix) == bad_prefix then
 		path = string.sub(path, #bad_prefix + 1)
 	end
 	vim.fn.setreg("+", path)
-	vim.notify("copied dir")
+end
+
+-- copy curr work dir
+vim.keymap.set("n", "<leader>wq", function()
+	local dir_path = vim.fn.expand("%:p:h")
+	use_path(dir_path)
+	vim.notify("Copied dir path")
+end)
+
+-- copy filename
+vim.keymap.set("n", "<leader>we", function()
+	local filename = vim.fn.expand("%:t")
+	use_path(filename)
+	vim.notify("Copied filename")
+end)
+
+-- copy full path
+vim.keymap.set("n", "<leader>wr", function()
+	local full_path = vim.fn.expand("%:p")
+	use_path(full_path)
+	vim.notify("Copied full path")
 end)
 
 -- stupid
