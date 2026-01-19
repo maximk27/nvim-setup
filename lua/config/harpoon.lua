@@ -40,7 +40,6 @@ local function update_preview()
 		return
 	end
 	local buf = M.buf
-	print("modifying: " .. buf)
 
 	local harpoon = require("harpoon")
 	local keys = M.keys
@@ -139,7 +138,6 @@ end
 local function preview_setup()
 	vim.keymap.set("n", "<leader>e", function()
 		local buf = get_buf()
-		print("editing: " .. M.buf)
 		update_preview()
 		local win = vim.api.nvim_get_current_win()
 		vim.api.nvim_win_set_buf(win, buf)
