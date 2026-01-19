@@ -99,18 +99,36 @@ local function navigation_setup()
 
 	local keys = M.keys
 
+	-- from harpoon
+	function create_item(name)
+		local bufnr = vim.fn.bufnr(name, false)
+
+		local pos = { 1, 0 }
+		if bufnr ~= -1 then
+			pos = vim.api.nvim_win_get_cursor(0)
+		end
+
+		return {
+			value = name,
+			context = {
+				row = pos[1],
+				col = pos[2],
+			},
+		}
+	end
+
 	local function set_mark(idx)
 		local path = vim.fn.expand("%:p")
 
-		local target = "/home/"
-		local prefix = string.sub(path, 1, #target)
-		if path == nil or prefix ~= target then
+		if path == nil or vim.bo.filetype == "oil" then
 			vim.notify("Harpoon: no file to mark", vim.log.levels.WARN)
 			return
 		end
 
+		item = create_item(path)
+
 		-- set path
-		harpoon:list():replace_at(idx, { value = path })
+		harpoon:list():replace_at(idx, item)
 	end
 
 	local function go_mark(idx)
