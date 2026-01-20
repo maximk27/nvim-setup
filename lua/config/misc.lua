@@ -181,13 +181,17 @@ function suggestion_setup()
 		mapping = {
 			-- ["<C-n>"] = cmp.config.disable,
 			-- ["<C-p>"] = cmp.config.disable,
-			["<C-e>"] = cmp.config.disable,
 			["<Tab>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
 			["<C-Space>"] = function()
-				if ls.expand_or_jumpable() then
+				if ls.jumpable(1) then
+					-- jump next arg
 					ls.expand_or_jump()
+				elseif cmp.visible() then
+					-- close completion
+					cmp.close()
 				else
-					cmp.mapping.complete()
+					-- show completion
+					cmp.complete()
 				end
 			end,
 			["<C-n>"] = cmp.mapping.select_next_item(),
